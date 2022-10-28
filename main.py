@@ -1,7 +1,7 @@
 # uvicorn main:app --reload
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, Body
 
-from shemas import Book
+from shemas import Book, Author
 
 app = FastAPI()
 
@@ -22,8 +22,8 @@ def get_user_item(pk: int, item: str):
 
 
 @app.post('/book')
-def create_book(book: Book):
-    return book
+def create_book(item: Book, author: Author, quantity: int = Body(...)): # без Body попадет в запрос
+    return {'item': item, 'author': author, 'quantity': quantity}
 
 
 @app.get('/book') # http://127.0.0.1:8000/book?q=hhhh
@@ -39,3 +39,8 @@ def get_book(q: str = Query(None, max_length=5, min_length=2, description='Эт�
 @app.get('book/{pk}')
 def get_single_book(pk: int = Path(..., qt=1, le=20), pages: int = Query(None, qt=10, le=500)): # значение больше 1 и менбше 20
     return {'pk': pk, 'pages': pages}
+
+
+@app.post('/author')
+def create_author(author: Author = Body(..., embed=True)): # сразу вложенность
+    return {'author': author}

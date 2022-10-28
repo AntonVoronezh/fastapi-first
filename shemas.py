@@ -15,3 +15,11 @@ class Book(BaseModel):
     summary: str = None
     genres: List[Genre]
     pages: int
+
+
+class Author(BaseModel):
+    first_name: str
+    last_name: str
+    age: int
+
+
