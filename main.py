@@ -1,5 +1,5 @@
 # uvicorn main:app --reload
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Path
 
 from shemas import Book
 
@@ -34,3 +34,8 @@ def get_book(q: str = Query(None, max_length=5, min_length=2, description='Эт�
 # def get_book(q: List[str] = Query(["test", "test2"]) - лист значений с параметр по умолчанию
 # def get_book(q: str = Query(..., , deprecated=True) - устаревший параметр
     return q
+
+
+@app.get('book/{pk}')
+def get_single_book(pk: int = Path(..., qt=1, le=20), pages: int = Query(None, qt=10, le=500)): # значение больше 1 и менбше 20
+    return {'pk': pk, 'pages': pages}
